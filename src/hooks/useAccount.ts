@@ -9,8 +9,6 @@ interface AccountInfo {
     url: string ;
     totalLikes: number;
     postsCount: number;
-    followersCount: number;
-    followingCount: number;
 }
 
 interface AccountsCache {
@@ -43,8 +41,6 @@ export default function useAccount(address?: string) {
                 created: accountInfoRaw.created.toNumber(),
                 totalLikes: accountInfoRaw.totalLikes.toNumber(),
                 postsCount: accountInfoRaw.postsCount.toNumber(),
-                followersCount: accountInfoRaw.followersCount.toNumber(),
-                followingCount: accountInfoRaw.followingCount.toNumber(),
             }
             setCache({
                 ...getGlobalState('cache'), // get latest state

@@ -5,11 +5,11 @@
   - [x] homepage
   - [ ] Show earned TRX
   - [ ] Implement button to receive TRX
-    - [ ] Store how much everyone has earned
+    - [ ] Evaluate: Directly send thet TRX to the receiver instead? This might make the transaction even more expensive..
 - [x] Implement like
-- [ ] Remove follower to make transactions cheaper
+- [x] Remove follower to make transactions cheaper
 - [ ] Input
-  - [ ] Show how much characters are left
+  - [x] Show how much characters are left
   - [ ] Also check the number of chars in the contract
 - [ ] Reload page when posting/liking/etc.
 - [ ] List recent posts on homepage

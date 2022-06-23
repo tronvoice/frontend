@@ -24,7 +24,7 @@ export default function Profile() {
         }
         (async () => {
             const postIds = await connection.contract.get5PostIds(connection.address, 0).call();
-            setLatestPosts(simplifyArrayWithBigNumbers(postIds).filter(e => e !== 0));
+            setLatestPosts(simplifyArrayWithBigNumbers(postIds).reverse().filter(e => e !== 0));
         })();
     }, [connection.status, address, profile]);
 
@@ -58,10 +58,10 @@ export default function Profile() {
             </div>
             <div className={styles.info}>
                 <div>
-                    0 <span className="muted">Following</span>
+                    {profile.postsCount} <span className="muted">Posts</span>
                 </div>
                 <div>
-                    0 <span className="muted">Followers</span>
+                    {profile.totalLikes} <span className="muted">Likes Received</span>
                 </div>
             </div>
         </div>

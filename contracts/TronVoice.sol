@@ -23,8 +23,6 @@ contract TronVoice {
         string url;
         uint totalLikes;
         uint[] postIds;
-        AddressSet.Set followers;
-        AddressSet.Set following;
         uint earnedTrx; // TODO
     }
     
@@ -47,8 +45,6 @@ contract TronVoice {
         string url;
         uint totalLikes;
         uint postsCount;
-        uint followersCount;
-        uint followingCount;
     }
 
     struct PostInfo {
@@ -77,9 +73,7 @@ contract TronVoice {
             account.image,
             account.url,
             account.totalLikes,
-            account.postIds.length,
-            account.followers.count(),
-            account.following.count()
+            account.postIds.length
         );
     }
 
@@ -142,20 +136,6 @@ contract TronVoice {
         account.name = name;
         account.image = image;
         account.url = url;
-    }
-
-    function follow(address adr) public {
-        Account storage targetAccount = accounts[adr];
-        Account storage thisAccount = accounts[adr];
-        targetAccount.followers.insert(msg.sender);
-        thisAccount.following.insert(adr);
-    }
-
-    function unfollow(address adr) public {
-        Account storage targetAccount = accounts[adr];
-        Account storage thisAccount = accounts[adr];
-        targetAccount.followers.remove(msg.sender);
-        thisAccount.following.remove(adr);
     }
 
     function post(string memory text, uint replyTo) public payable {

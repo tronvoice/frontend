@@ -8,6 +8,8 @@ interface Props {
     replyPostId?: number;
 }
 
+const CHAR_LIMIT = 280;
+
 export default function NewPost({ replyPostId }: Props) {
     const [connection] = useConnection();
     const accountInfo = useAccount(connection.status === 'connected' ? connection.address : undefined);
@@ -24,19 +26,29 @@ export default function NewPost({ replyPostId }: Props) {
         await connection.contract.post(newPostText, replyPostId ?? 0).send({});
     }
 
+    function edit(newText: string) {
+        if (newText.length > CHAR_LIMIT) {
+            setNewPostText(newText.slice(0, CHAR_LIMIT));
+        } else {
+            setNewPostText(newText);
+        }
+    }
+
+    const shownOnHomepage = !replyPostId;
+    
     return <section className={styles.newPost}>
         <div className={styles.posttop}>
             <div className={styles.img}>
                 <Link href={`/profile/${connection.address}`}><a><img src={accountInfo.image} /></a></Link>
             </div>
             <div className={styles.author}>
-                <Link href={`/profile/${connection.address}`}>{accountInfo.name}</Link> {!replyPostId && <small className="muted"><Link href="/account">(Edit Account)</Link></small>}
+                <Link href={`/profile/${connection.address}`}>{accountInfo.name}</Link> {shownOnHomepage && <small className="muted"><Link href="/account">(Edit Account)</Link></small>}
                 <div className={styles.address}><Link href={`/profile/${connection.address}`}>{connection.address}</Link></div>
             </div>
         </div>
-        <textarea onChange={(ev) => setNewPostText(ev.target.value)} value={newPostText}></textarea>
+        <textarea onChange={(ev) => edit(ev.target.value)} value={newPostText}></textarea>
         <div className={styles.bottom}>
-            {!replyPostId && <div className={styles.stats}>{accountInfo.postsCount} posts, {accountInfo.totalLikes} likes, {accountInfo.followersCount} follower, {accountInfo.followingCount} following</div>}
+            {shownOnHomepage && <div className={styles.stats}>{CHAR_LIMIT - newPostText.length}/{CHAR_LIMIT} characters left</div>}
             <div className={styles.submit}>
                 <button onClick={post}>Post</button>
             </div>
