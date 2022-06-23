@@ -1,0 +1,21 @@
+.portal {
+    position: absolute;
+    z-index: 1000000000000;
+    display: inline-block;
+    pointer-events: none;
+
+    background: #3c3c3c;
+    padding: 10px;
+    color: #fff;
+    box-shadow: 1px 1px 2px rgba(0,0,0,0.75);
+    opacity: 0.98;
+
+    font-size: 13px;
+
+    &.hidden {
+        display: none;
+    }
+}
+.hidden {
+    display: none;
+}

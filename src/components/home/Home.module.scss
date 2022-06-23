@@ -1,0 +1,70 @@
+
+.createAccount button {
+    width: 100%;
+}
+.posttop {
+    width: 100%;
+    display: flex;
+    font-size: 90%;
+    
+    .img {
+        border-radius: 50%;
+        background: #000;
+        height: 40px;
+        aspect-ratio: 1/1;
+        margin-right: 10px;
+    }
+    .author {
+        padding-top: 1px;
+        flex: 1 1 70%;
+        overflow: hidden;
+    }
+    .address {
+        font-size: 70%;
+        opacity: 0.5;
+    }
+    .date {
+        text-align: right;
+    }
+}
+
+.posts {
+    article {
+        border-radius: 5px;
+        font-size: 90%;
+        background: #121212;
+        color: #eee;
+        margin: 0 0 30px 0;
+        padding: 20px;
+        transition: 0.4s;
+
+        &:hover {
+            box-shadow: rgba(255, 255, 255, 0.05) 0px 6px 24px 0px, rgba(255, 255, 255, 0.08) 0px 0px 0px 1px;
+        }
+
+        .content {
+            margin: 20px 0;
+            font-weight: 500;
+        }
+
+        .postbottom {
+            display: flex;
+
+            div {
+                svg {
+                    width: 20px;
+                    opacity: 0.5;
+                    vertical-align: top;
+                    transition: 0.2s;
+                    cursor: pointer;
+                    fill: #fff;
+                }
+                margin-right: 15px;
+
+                &:hover svg {
+                    opacity: 1;
+                }
+            }
+        }
+    }
+}
