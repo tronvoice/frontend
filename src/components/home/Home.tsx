@@ -5,6 +5,7 @@ import useAccount from '../../hooks/useAccount';
 import Link from 'next/link';
 import PostLoader from '../post/PostLoader';
 import NewPost from '../post/NewPost';
+import { Layout } from '../common/Layout';
 
 
 export default function Home() {
@@ -34,7 +35,7 @@ export default function Home() {
         </>;
     }
 
-    return <div className="container">
+    return <Layout>
         {accountElement}
 
         <h2>Recent Posts</h2>
@@ -87,5 +88,5 @@ export default function Home() {
                 <div className={styles.content}>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr,</div>
             </article>
         </section>
-    </div>
+    </Layout>
 }

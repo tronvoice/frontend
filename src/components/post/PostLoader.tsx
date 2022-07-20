@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import useConnection from '../../hooks/useConnection';
+import useConnection, { pLimiter } from '../../hooks/useConnection';
 import { simplifyArrayWithBigNumbers, simplifyObjectWithBigNumbers } from '../../misc/util';
 import LoadingIndicator from '../common/LoadingIndicator';
 import Tooltip from '../common/Tooltip';
@@ -23,7 +23,10 @@ export default function PostLoader({ id, full = false }: Props) {
             return;
         }
         (async () => {
-            const latestPostRaw = await connection.contract.getPost(id).call();
+            const latestPostRaw = await pLimiter(async () => {
+                await new Promise(resolve => setTimeout(resolve, 200));
+                return await connection.contract.getPost(id).call()
+            });
             const latestPost = simplifyObjectWithBigNumbers(latestPostRaw as any) as PostInfo;
             latestPost.owner = connection.tronWeb.address.fromHex(latestPost.owner);
             setPostInfo(latestPost);
@@ -35,7 +38,10 @@ export default function PostLoader({ id, full = false }: Props) {
             return;
         }
         (async () => {
-            const replyIdsRaw = await connection.contract.getReplies(id).call();
+            const replyIdsRaw = await pLimiter(async () => {
+                await new Promise(resolve => setTimeout(resolve, 200));
+                return await connection.contract.getReplies(id).call()
+            });
             const replyIds = simplifyArrayWithBigNumbers(replyIdsRaw);
             replyIds.reverse();
             setReplyIds(replyIds);

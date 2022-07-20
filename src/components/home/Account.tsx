@@ -3,6 +3,7 @@ import styles from './Account.module.scss';
 import useConnection from '../../hooks/useConnection';
 import Link from 'next/link';
 import useAccount from '../../hooks/useAccount';
+import { Layout } from '../common/Layout';
 
 export default function Account() {
     const [connection, connect] = useConnection();
@@ -34,8 +35,7 @@ export default function Account() {
         console.log('DONE', a);
     }
 
-    return <div className="container">
-
+    return <Layout>
         <section className={styles.section}>
             <h2>Account Data</h2>
             <table className={styles.table}>
@@ -63,5 +63,5 @@ export default function Account() {
                 </tbody>
             </table>
         </section>
-    </div>
+    </Layout>
 }

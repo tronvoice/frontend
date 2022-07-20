@@ -26,7 +26,7 @@ export default function PostContent({ id, data }: { id: number; data: PostInfo }
     const isLiked = likedPosts.isLiked(id);
 
     async function like() {
-        if (connection.status !== 'connected') {
+        if (connection.status !== 'connected' || isLiked) {
             return;
         }
         await connection.contract.like(id).send({

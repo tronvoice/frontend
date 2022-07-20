@@ -2,7 +2,7 @@ import { format } from 'date-fns';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import useAccount from '../../hooks/useAccount';
-import useConnection from '../../hooks/useConnection';
+import useConnection, { pLimiter } from '../../hooks/useConnection';
 import { simplifyArrayWithBigNumbers } from '../../misc/util';
 import PostLoader from '../post/PostLoader';
 import styles from './Profile.module.scss';
@@ -23,7 +23,10 @@ export default function Profile() {
             return;
         }
         (async () => {
-            const postIds = await connection.contract.get5PostIds(connection.address, 0).call();
+            const postIds = await pLimiter(async () => {
+                await new Promise(resolve => setTimeout(resolve, 200));
+                return await connection.contract.get5PostIds(connection.address, 0).call();
+            });
             setLatestPosts(simplifyArrayWithBigNumbers(postIds).reverse().filter(e => e !== 0));
         })();
     }, [connection.status, address, profile]);

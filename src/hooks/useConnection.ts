@@ -1,7 +1,10 @@
 import { ethers } from 'ethers';
+import pLimit from 'p-limit';
 import { useEffect, useState } from 'react';
 import { createGlobalState } from "react-hooks-global-state";
 import abi from '../misc/contractAbi';
+
+export const pLimiter = pLimit(1);
 
 interface ConnectStateDisconnected {
     status: 'disconnected';
@@ -9,7 +12,7 @@ interface ConnectStateDisconnected {
 interface ConnectStateConnected { // waiting for user to confirm
     status: 'connected';
     tronWeb: any;
-    contract: any; // TODO
+    contract: any;
     address: string;
     balance: number;
     // balanceBigNumber: ethers.BigNumber;

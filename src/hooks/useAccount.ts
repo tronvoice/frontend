@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import useConnection from './useConnection';
+import useConnection, { pLimiter } from './useConnection';
 import { createGlobalState } from "react-hooks-global-state";
 
 interface AccountInfo {
@@ -33,7 +33,10 @@ export default function useAccount(address?: string) {
         });
         (async () => {
             console.log('REQUEST!!!!');
-            const accountInfoRaw = await connection.contract.getAccountInfo(connection.address).call();
+            const accountInfoRaw = await pLimiter(async () => {
+                await new Promise(resolve => setTimeout(resolve, 200));
+                return await connection.contract.getAccountInfo(connection.address).call();
+            });
             const accountInfo: AccountInfo = {
                 name: accountInfoRaw.name,
                 image: accountInfoRaw.image,
