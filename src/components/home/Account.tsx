@@ -7,7 +7,7 @@ import { Layout } from '../common/Layout';
 
 export default function Account() {
     const [connection, connect] = useConnection();
-    const accountInfo = useAccount();
+    const accountInfo = useAccount(connection.status === 'connected' ? connection.address : undefined);
 
     const [name, setName] = useState('');
     const [url, setUrl] = useState('');

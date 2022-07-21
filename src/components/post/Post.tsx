@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import { Layout } from '../common/Layout';
 import PostLoader from './PostLoader';
 
 export interface PostInfo {
@@ -18,7 +19,7 @@ export default function Post() {
         return <div></div>
     }
 
-    return <div className="container">
+    return <Layout>
         <PostLoader id={parseInt(postId, 10)} full={true} />
-    </div>;
+    </Layout>;
 }

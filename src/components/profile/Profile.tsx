@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import useAccount from '../../hooks/useAccount';
 import useConnection, { pLimiter } from '../../hooks/useConnection';
 import { simplifyArrayWithBigNumbers } from '../../misc/util';
+import { Layout } from '../common/Layout';
 import PostLoader from '../post/PostLoader';
 import styles from './Profile.module.scss';
 
@@ -35,7 +36,7 @@ export default function Profile() {
         return <div></div>
     }
 
-    return <div className="container">
+    return <Layout>
         <div className={styles.author}>
             <div className={styles.img}>
                 <img src={profile.image} alt="Profile image" />
@@ -73,5 +74,5 @@ export default function Profile() {
             <h2>Latest Posts</h2>
             {latestPosts.map((id) => <PostLoader key={id} id={id} />)}
         </>}
-    </div>;
+    </Layout>;
 }
