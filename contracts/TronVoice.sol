@@ -8,22 +8,21 @@ contract TronVoice {
 
     using AddressSet for AddressSet.Set;
 
-    uint accountCreationCost = 100000000000000000;
-    uint likeCost = 1;
-    uint postCost = 1;
+    uint accountCreationCost =  1_000_000; //  1 TRX - fee to create an account
+    uint postCost =             1_000_000; //  1 TRX - needed to create a post
+    uint likeCost =            10_000_000; // 10 TRX - this is send to the owner of the post
     
     mapping(address => Account) accounts;
     
     // Stored like this
     struct Account {
-        address owner;
+        address payable owner;
         uint created;
         string name;
         string image;
         string url;
         uint totalLikes;
         uint[] postIds;
-        uint earnedTrx; // TODO
     }
     
     Post[] posts;
@@ -57,9 +56,34 @@ contract TronVoice {
         uint replyCount;
     }
 
-    // --------------------------- view functions
+    // --------------------------- setup
 
-    // TODO get last post id to show recent posts on the homepage
+    address payable contractOwner;
+    constructor(address payable _contractOwner) {
+        require(_contractOwner != address(0));
+        contractOwner = _contractOwner;
+    }
+
+    // withdraw allows the owner to transfer out the balance of the contract.
+    function withdraw() public {
+        require(msg.sender == contractOwner);
+        contractOwner.transfer(address(this).balance);
+    }
+
+    function setAccountCost(uint _accountCreationCost) public {
+        require(msg.sender == contractOwner);
+        accountCreationCost = _accountCreationCost;
+    }
+    function setLikeCost(uint _likeCost) public {
+        require(msg.sender == contractOwner);
+        likeCost = _likeCost;
+    }
+    function setPostCost(uint _postCost) public {
+        require(msg.sender == contractOwner);
+        postCost = _postCost;
+    }
+
+    // --------------------------- view functions
 
     function postsCount() public view returns (uint) {
         return posts.length;
@@ -122,15 +146,16 @@ contract TronVoice {
         replies = post1.replies;
     }
 
-    // TODO implement replies to currently viewed post
-
     // --------------------------- non-view functions
 
     function setAccount(string memory name, string memory image, string memory url) public payable {
+        require(bytes(name).length < 200);
+        require(bytes(image).length < 1000);
+        require(bytes(url).length < 1000);
         Account storage account = accounts[msg.sender];
         if (account.created == 0) { // account creation
-            // require(msg.value >= accountCreationCost);
-            account.owner = msg.sender;
+            require(msg.value >= accountCreationCost);
+            account.owner = payable(msg.sender);
             account.created = block.timestamp;
         }
         account.name = name;
@@ -139,7 +164,8 @@ contract TronVoice {
     }
 
     function post(string memory text, uint replyTo) public payable {
-        // TODO payment
+        require(msg.value >= postCost);
+        require(bytes(text).length < 280);
         uint postId = posts.length;
         uint[] memory replies;
         Post memory newPost = Post(msg.sender, text, block.timestamp, 0, replyTo, replies);
@@ -155,16 +181,21 @@ contract TronVoice {
     }
 
     function deletePost(uint postId) public payable {
-        // TODO
+        Account storage account = accounts[msg.sender];
+        require(msg.sender == account.owner);
+        Post storage post1 = posts[postId];
+        post1.text = '';
     }
 
     function like(uint postId) public payable {
-        // TODO payment
-        // TODO add payment to earned trx
+        require(msg.value >= likeCost);
         Post storage likedPost = posts[postId];
         likedPost.likes += 1;
         Account storage account = accounts[likedPost.owner];
         account.totalLikes += 1;
+
+        // send the like cost directly to the owner
+        account.owner.transfer(likeCost);
     }
     
 }
