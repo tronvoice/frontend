@@ -26,10 +26,13 @@ export default function Account() {
         if (connection.status !== 'connected') {
             return;
         }
-        console.log('GOING');
+        let callValue = 0;
+        if (!accountInfo || accountInfo.created === 0) {
+            console.log('CREATioN!');
+            callValue = 1_000_000;
+        }
         const a = await connection.contract.setAccount(name, image, url).send({
-            // feeLimit: 1_000_000,
-            // callValue: 0,
+            callValue,
             shouldPollResponse: true
         });
         console.log('DONE', a);

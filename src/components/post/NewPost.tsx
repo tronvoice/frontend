@@ -23,7 +23,9 @@ export default function NewPost({ replyPostId }: Props) {
         if (connection.status !== 'connected') {
             return;
         }
-        await connection.contract.post(newPostText, replyPostId ?? 0).send({});
+        await connection.contract.post(newPostText, replyPostId ?? 0).send({
+            callValue: 1_000_000, // 1 TRX
+        });
     }
 
     function edit(newText: string) {

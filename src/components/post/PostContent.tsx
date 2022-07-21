@@ -31,7 +31,7 @@ export default function PostContent({ id, data }: { id: number; data: PostInfo }
         }
         await connection.contract.like(id).send({
             // feeLimit: 1_000_000,
-            callValue: 10_000_000,
+            callValue: 10_000_000, // 10 TRX
         });
         likedPosts.markAsLiked(id);
     }
