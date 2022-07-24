@@ -101,20 +101,6 @@ contract TronVoice {
         );
     }
 
-    function getLastestPost(address owner) public view returns (PostInfo memory postInfo) {
-        Account storage account = accounts[owner];
-        uint lastPostId = account.postIds[account.postIds.length - 1];
-        Post storage lastPost = posts[lastPostId];
-        postInfo = PostInfo(
-            lastPost.owner,
-            lastPost.text,
-            lastPost.date,
-            lastPost.likes,
-            lastPost.replyTo,
-            lastPost.replies.length
-        );
-    }
-
     function get5PostIds(address owner, int offset) public view returns (uint[] memory postIds) {
         Account storage account = accounts[owner];
         int endElement = int(account.postIds.length) - offset;
