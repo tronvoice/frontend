@@ -1,15 +1,15 @@
 
 # TODO
-- [ ] Profile page
+- [x] Profile page
   - [x] Add image url
   - [x] homepage
-  - [ ] Directly send thet TRX to the receiver!
+  - [x] Directly send the TRX to the receiver!
 - [x] Implement like
 - [x] Remove follower to make transactions cheaper
-- [ ] Input
+- [x] Input
   - [x] Show how much characters are left
-  - [ ] Also check the number of chars in the contract
-  - [ ] Also check the bytes and not the length of the text via `new Blob(["😀"]).size`
+  - [x] Also check the number of chars in the contract
+  - [x] Also check the bytes and not the length of the text via `new Blob(["😀"]).size`
 - [ ] Reload page when posting/liking/etc.
 - [ ] List recent posts on homepage
 - [x] Header / Logo

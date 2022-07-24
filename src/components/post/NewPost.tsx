@@ -13,7 +13,7 @@ const CHAR_LIMIT = 280;
 export default function NewPost({ replyPostId }: Props) {
     const [connection] = useConnection();
     const accountInfo = useAccount(connection.status === 'connected' ? connection.address : undefined);
-    const [newPostText, setNewPostText] = useState('');
+    const [newPost, setNewPostText] = useState({ text: '', length: 0 });
 
     if (!accountInfo || connection.status === 'disconnected') {
         return <div>Login!</div>
@@ -23,16 +23,20 @@ export default function NewPost({ replyPostId }: Props) {
         if (connection.status !== 'connected') {
             return;
         }
-        await connection.contract.post(newPostText, replyPostId ?? 0).send({
+        await connection.contract.post(newPost.text, replyPostId ?? 0).send({
             callValue: 1_000_000, // 1 TRX
         });
     }
 
     function edit(newText: string) {
-        if (newText.length > CHAR_LIMIT) {
-            setNewPostText(newText.slice(0, CHAR_LIMIT));
+        const length = new Blob([newText]).size;
+        if (length > CHAR_LIMIT) {
+            while (new Blob([newText]).size > CHAR_LIMIT) {
+                newText = newText.slice(0, -1);
+            }
+            setNewPostText({ text: newText, length: new Blob([newText]).size } );
         } else {
-            setNewPostText(newText);
+            setNewPostText({ text: newText, length });
         }
     }
 
@@ -48,9 +52,9 @@ export default function NewPost({ replyPostId }: Props) {
                 <div className={styles.address}><Link href={`/profile/${connection.address}`}>{connection.address}</Link></div>
             </div>
         </div>
-        <textarea onChange={(ev) => edit(ev.target.value)} value={newPostText}></textarea>
+        <textarea onChange={(ev) => edit(ev.target.value)} value={newPost.text}></textarea>
         <div className={styles.bottom}>
-            {shownOnHomepage && <div className={styles.stats}>{CHAR_LIMIT - newPostText.length}/{CHAR_LIMIT} characters left</div>}
+            {shownOnHomepage && <div className={styles.stats}>{newPost.length}/{CHAR_LIMIT} bytes left</div>}
             <div className={styles.submit}>
                 <button onClick={post}>Post</button>
             </div>
