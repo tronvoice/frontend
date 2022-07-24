@@ -15,7 +15,7 @@ export default function NewPost({ replyPostId }: Props) {
     const accountInfo = useAccount(connection.status === 'connected' ? connection.address : undefined);
     const [newPost, setNewPostText] = useState({ text: '', length: 0 });
 
-    if (!accountInfo || connection.status === 'disconnected') {
+    if (!accountInfo || connection.status !== 'connected') {
         return <div>Login!</div>
     }
 
