@@ -7,6 +7,7 @@ import PostLoader from '../post/PostLoader';
 import NewPost from '../post/NewPost';
 import { Layout } from '../common/Layout';
 import LoadingIndicator from '../common/LoadingIndicator';
+import { simplifyArrayWithBigNumbers } from '../../misc/util';
 
 
 export default function Home() {
@@ -24,6 +25,20 @@ export default function Home() {
                 return await connection.contract.postsCount().call();
             });
             setGlobalPostCount(globalPostCountBigNum.toNumber());
+        })();
+    }, [connection.status]);
+
+    let [latestPosts, setLatestPosts] = useState<number[]>([]);
+    useEffect(() => {
+        if (connection.status !== 'connected' || !connection.address) {
+            return;
+        }
+        (async () => {
+            const postIds = await pLimiter(async () => {
+                await new Promise(resolve => setTimeout(resolve, 200));
+                return await connection.contract.get5PostIds(connection.address, 0).call();
+            });
+            setLatestPosts(simplifyArrayWithBigNumbers(postIds).reverse().filter(e => e !== 0).slice(0, 3));
         })();
     }, [connection.status]);
 
@@ -59,8 +74,8 @@ export default function Home() {
             <NewPost />
 
             {accountInfo.postsCount !== 0 && <section className={styles.posts}>
-                <h2>Your Latest Post</h2>
-                <PostLoader id={accountInfo.postsCount - 1} />
+                <h2>Your Latest Posts</h2>
+                {latestPosts.map((id) => <PostLoader key={id} id={id} />)}
             </section>}
         </>;
     }
@@ -73,7 +88,7 @@ export default function Home() {
             posts.push(<PostLoader key={i} id={i} />);
         }
         recentPosts = <>
-            <h2>Recent Posts</h2>
+            <h2>Recent Posts on TronVoice.com</h2>
             <section className={styles.posts}>
                 {posts}
             </section>
