@@ -6,6 +6,7 @@ import Link from 'next/link';
 import PostLoader from '../post/PostLoader';
 import NewPost from '../post/NewPost';
 import { Layout } from '../common/Layout';
+import LoadingIndicator from '../common/LoadingIndicator';
 
 
 export default function Home() {
@@ -26,8 +27,23 @@ export default function Home() {
         })();
     }, [connection.status]);
 
+    if (connection.status === 'notronlink') {
+        return <Layout>
+            <div className={styles.connecting}>
+                <p>You need to install the TronLink browser extension to connect to this website.</p>
+                <p>
+                    <a href="https://www.tronlink.org/"><img src="https://www.tronlink.org/home/images/logo.png" /></a>
+                </p>
+            </div>
+        </Layout>;
+    }
     if (connection.status === 'disconnected') {
-        return <div>not connected</div>;
+        return <Layout>
+            <div className={styles.connecting}>
+                <p>Connecting...</p>
+                <LoadingIndicator width={100} color='white' />
+            </div>
+        </Layout>;
     }
 
     let accountElement: JSX.Element;

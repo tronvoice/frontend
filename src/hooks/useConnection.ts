@@ -7,7 +7,7 @@ import abi from '../misc/contractAbi';
 export const pLimiter = pLimit(1);
 
 interface ConnectStateDisconnected {
-    status: 'disconnected';
+    status: 'disconnected' | 'notronlink';
 }
 interface ConnectStateConnected { // waiting for user to confirm
     status: 'connected';
@@ -31,26 +31,28 @@ const CONTRACT_ADDRESS = 'TAChC5Z5vK9BrZ7GVmq4mG571E1amAbw4C';
 export default function useConnection() {
     const [connection, setConnection] = useGlobalState('state');
 
-    useEffect(() => {
-        (async () => {
-            await new Promise(resolve => setTimeout(resolve, 200)); // give tronweb some time to inject
-            const tronWeb = (window as any).tronWeb;
-            const contract = await tronWeb.contract(abi, CONTRACT_ADDRESS); 
-            await tronWeb.request({ method: 'tron_requestAccounts' });
-            const balance = parseFloat(tronWeb.fromSun(await tronWeb.trx.getBalance(tronWeb.defaultAddress.base58)));
-            setConnection({
-                status: 'connected',
-                contract,
-                tronWeb,
-                address: tronWeb.defaultAddress.base58,
-                balance,
-            });
-        })();
-    }, []);
-
     async function connect() {
-        // TODO is this needed?
-    }
+        await new Promise(resolve => setTimeout(resolve, 200)); // give tronweb some time to inject
+        const tronWeb = (window as any).tronWeb;
+        if (!tronWeb) {
+            setConnection({
+                status: 'notronlink',
+            });
+            return;
+        }
+        const contract = await tronWeb.contract(abi, CONTRACT_ADDRESS);
+        await tronWeb.request({ method: 'tron_requestAccounts' });
+        const balance = parseFloat(tronWeb.fromSun(await tronWeb.trx.getBalance(tronWeb.defaultAddress.base58)));
+        setConnection({
+            status: 'connected',
+            contract,
+            tronWeb,
+            address: tronWeb.defaultAddress.base58,
+            balance,
+        });
+    };
+
+    useEffect(() => { connect() }, []);
 
     return [connection, connect] as [ConnectState, () => void];
 }
