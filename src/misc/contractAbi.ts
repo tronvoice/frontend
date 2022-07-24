@@ -2,6 +2,17 @@ export default [
 	{
 		"inputs": [
 			{
+				"internalType": "address payable",
+				"name": "_contractOwner",
+				"type": "address"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"inputs": [
+			{
 				"internalType": "uint256",
 				"name": "postId",
 				"type": "uint256"
@@ -10,19 +21,6 @@ export default [
 		"name": "deletePost",
 		"outputs": [],
 		"stateMutability": "payable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "adr",
-				"type": "address"
-			}
-		],
-		"name": "follow",
-		"outputs": [],
-		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -89,16 +87,6 @@ export default [
 					{
 						"internalType": "uint256",
 						"name": "postsCount",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "followersCount",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "followingCount",
 						"type": "uint256"
 					}
 				],
@@ -263,6 +251,19 @@ export default [
 		"type": "function"
 	},
 	{
+		"inputs": [],
+		"name": "postsCount",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
 		"inputs": [
 			{
 				"internalType": "string",
@@ -288,12 +289,45 @@ export default [
 	{
 		"inputs": [
 			{
-				"internalType": "address",
-				"name": "adr",
-				"type": "address"
+				"internalType": "uint256",
+				"name": "_accountCreationCost",
+				"type": "uint256"
 			}
 		],
-		"name": "unfollow",
+		"name": "setAccountCost",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_likeCost",
+				"type": "uint256"
+			}
+		],
+		"name": "setLikeCost",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_postCost",
+				"type": "uint256"
+			}
+		],
+		"name": "setPostCost",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "withdraw",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"

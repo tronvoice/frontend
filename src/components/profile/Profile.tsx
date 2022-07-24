@@ -20,13 +20,13 @@ export default function Profile() {
     const profile = useAccount(address);
 
     useEffect(() => {
-        if (!profile || connection.status !== 'connected') {
+        if (!profile || connection.status !== 'connected' || !address) {
             return;
         }
         (async () => {
             const postIds = await pLimiter(async () => {
                 await new Promise(resolve => setTimeout(resolve, 200));
-                return await connection.contract.get5PostIds(connection.address, 0).call();
+                return await connection.contract.get5PostIds(address, 0).call();
             });
             setLatestPosts(simplifyArrayWithBigNumbers(postIds).reverse().filter(e => e !== 0));
         })();

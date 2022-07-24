@@ -99,9 +99,7 @@ export default function PostLoader({ id, full = false }: Props) {
 
     return <>
         {replyPart}
-        <article className={styles.post + ' ' + (!postInfo ? styles.loading : '')}>
-            <PostContent id={id} data={postInfo} />
-        </article>
+        <PostContent id={id} data={postInfo} />
         {answerPart}
         {replies}
     </>;

@@ -6,6 +6,7 @@ import Link from 'next/link';
 import useAccount from '../../hooks/useAccount';
 import useConnection from '../../hooks/useConnection';
 import likedPosts from '../../misc/likedPosts';
+import LoadingIndicator from '../common/LoadingIndicator';
 
 export interface PostInfo {
     owner: string;
@@ -21,7 +22,9 @@ export default function PostContent({ id, data }: { id: number; data: PostInfo }
     const [connection] = useConnection();
     const accountInfo = useAccount(data.owner);
     if (!accountInfo) {
-        return <div></div>;
+        return <article className={styles.post + ' ' + styles.loading}>
+            <LoadingIndicator color='white' width={200} />
+        </article>;
     }
     const isLiked = likedPosts.isLiked(id);
 
@@ -36,7 +39,8 @@ export default function PostContent({ id, data }: { id: number; data: PostInfo }
         likedPosts.markAsLiked(id);
     }
 
-    return <>
+
+    return <article className={styles.post}>
         <div className={styles.posttop}>
             <div className={styles.img}>
                 <Link href={`/profile/${data.owner}`}><a><img src={accountInfo.image} /></a></Link>
@@ -79,5 +83,5 @@ export default function PostContent({ id, data }: { id: number; data: PostInfo }
                 </Tooltip>
             </div>}
         </div>
-    </>;
+    </article>;
 }

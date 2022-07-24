@@ -32,10 +32,9 @@ export default function useAccount(address?: string) {
             [address]: 'requesting',
         });
         (async () => {
-            console.log('REQUEST!!!!');
             const accountInfoRaw = await pLimiter(async () => {
                 await new Promise(resolve => setTimeout(resolve, 200));
-                return await connection.contract.getAccountInfo(connection.address).call();
+                return await connection.contract.getAccountInfo(address).call();
             });
             const accountInfo: AccountInfo = {
                 name: accountInfoRaw.name,
