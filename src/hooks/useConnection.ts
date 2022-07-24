@@ -33,6 +33,7 @@ export default function useConnection() {
 
     useEffect(() => {
         (async () => {
+            await new Promise(resolve => setTimeout(resolve, 200)); // give tronweb some time to inject
             const tronWeb = (window as any).tronWeb;
             const contract = await tronWeb.contract(abi, CONTRACT_ADDRESS); 
             await tronWeb.request({ method: 'tron_requestAccounts' });
