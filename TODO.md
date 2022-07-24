@@ -14,6 +14,6 @@
 - [x] Header / Logo
 - [x] Slow down requests, currently getting some 503 errors from time to time...
 - [x] Reload page when posting/liking/etc.
-- [ ] Add connect/register buttons/links
-- [ ] Check on homepage if user is logged in
+- [x] Add connect/register buttons/links
+- [x] Check on homepage if user is logged in
 - [ ] Deploy to mainnet

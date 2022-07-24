@@ -28,14 +28,11 @@ export default function Account() {
         }
         let callValue = 0;
         if (!accountInfo || accountInfo.created === 0) {
-            console.log('CREATioN!');
             callValue = 1_000_000;
         }
-        const a = await connection.contract.setAccount(name, image, url).send({
-            callValue,
-            shouldPollResponse: true
-        });
-        console.log('DONE', a);
+        await connection.contract.setAccount(name, image, url).send({ callValue });
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        (window as any).location.href = '/';
     }
 
     return <Layout>
@@ -45,7 +42,9 @@ export default function Account() {
                 <tbody>
                     <tr>
                         <th>Address</th>
-                        <td>000</td>
+                        <td>{connection.status === 'connected'
+                        ? <a href={"https://shasta.tronscan.org/#/address/" + connection.address} target="_blank">{connection.address}</a>
+                        : 'N/A'}</td>
                     </tr>
                     <tr>
                         <th>Name</th>
