@@ -43,7 +43,7 @@ export default function Account() {
                     <tr>
                         <th>Address</th>
                         <td>{connection.status === 'connected'
-                        ? <a href={"https://shasta.tronscan.org/#/address/" + connection.address} target="_blank">{connection.address}</a>
+                        ? <a href={"https://tronscan.org/#/address/" + connection.address} target="_blank">{connection.address}</a>
                         : 'N/A'}</td>
                     </tr>
                     <tr>
