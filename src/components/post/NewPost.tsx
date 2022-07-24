@@ -26,6 +26,8 @@ export default function NewPost({ replyPostId }: Props) {
         await connection.contract.post(newPost.text, replyPostId ?? 0).send({
             callValue: 1_000_000, // 1 TRX
         });
+        await new Promise(resolve => setTimeout(resolve, 200));
+        (window as any).location.reload();
     }
 
     function edit(newText: string) {

@@ -37,6 +37,8 @@ export default function PostContent({ id, data }: { id: number; data: PostInfo }
             callValue: 10_000_000, // 10 TRX
         });
         likedPosts.markAsLiked(id);
+        await new Promise(resolve => setTimeout(resolve, 200));
+        (window as any).location.reload();
     }
 
 
