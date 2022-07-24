@@ -26,7 +26,7 @@ const { useGlobalState, setGlobalState, getGlobalState } = createGlobalState<{ s
     }
 });
 
-const CONTRACT_ADDRESS = 'TTvzL87zAC9gz3DuBUDzi763DBzMDJhfFt';
+const CONTRACT_ADDRESS = 'TAChC5Z5vK9BrZ7GVmq4mG571E1amAbw4C';
 
 export default function useConnection() {
     const [connection, setConnection] = useGlobalState('state');
