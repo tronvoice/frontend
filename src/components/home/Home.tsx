@@ -14,6 +14,7 @@ export default function Home() {
     const [connection, connect] = useConnection();
     const accountInfo = useAccount(connection.status === 'connected' ? connection.address : undefined);
     const [globalPostCount, setGlobalPostCount] = useState<undefined|number>();
+    const [timedOut, setTimedOut] = useState(false);
 
     useEffect(() => {
         if (connection.status !== 'connected') {
@@ -27,6 +28,11 @@ export default function Home() {
             setGlobalPostCount(globalPostCountBigNum.toNumber());
         })();
     }, [connection.status]);
+
+    useEffect(() => {
+        const timeout = setTimeout(() => setTimedOut(true), 2000);
+        return () => clearTimeout(timeout);
+    }, []);
 
     let [latestPosts, setLatestPosts] = useState<number[]>([]);
     useEffect(() => {
@@ -53,6 +59,15 @@ export default function Home() {
         </Layout>;
     }
     if (connection.status === 'disconnected') {
+        if (timedOut) {
+            return <Layout>
+                <div className={styles.connecting}>
+                    <p>Looks like your TronLink is not connected to this website.</p>
+                    <p>Please make sure TronLink is unlocked<br />and connected to the MainNet.</p>
+                    <p><button onClick={() => (window as any).location.reload()}>Reload to try again</button></p>
+                </div>
+            </Layout>;
+        }
         return <Layout>
             <div className={styles.connecting}>
                 <p>Connecting...</p>
