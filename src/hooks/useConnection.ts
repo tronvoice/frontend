@@ -26,8 +26,8 @@ const { useGlobalState, setGlobalState, getGlobalState } = createGlobalState<{ s
     }
 });
 
-const CONTRACT_ADDRESS = 'TAChC5Z5vK9BrZ7GVmq4mG571E1amAbw4C'; // testnet
-// const CONTRACT_ADDRESS = 'TC2RzBkXf5wNNmzrf5GmqrjnPQ6VjGzUQS'; // mainnet
+// const CONTRACT_ADDRESS = 'TAChC5Z5vK9BrZ7GVmq4mG571E1amAbw4C'; // testnet
+const CONTRACT_ADDRESS = 'TC2RzBkXf5wNNmzrf5GmqrjnPQ6VjGzUQS'; // mainnet
 
 export default function useConnection() {
     const [connection, setConnection] = useGlobalState('state');
