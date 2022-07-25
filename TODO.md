@@ -16,4 +16,4 @@
 - [x] Reload page when posting/liking/etc.
 - [x] Add connect/register buttons/links
 - [x] Check on homepage if user is logged in
-- [ ] Deploy to mainnet
+- [x] Deploy to mainnet
